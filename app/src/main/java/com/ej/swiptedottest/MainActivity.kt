@@ -21,19 +21,13 @@ class MainActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
 
 
+        val adapter = FragmentListAdapter(supportFragmentManager, lifecycle, fragList)
         val viewPager = binding.viewPager
+        viewPager.adapter = adapter
         val circleIndicator = binding.circleIndicator3
 
-        val tabAdapter = object : FragmentStateAdapter(this) {
-            override fun getItemCount(): Int {
-                return fragList.size
-            }
-            override fun createFragment(position: Int): Fragment {
-                return fragList[position]
-            }
-        }
         circleIndicator.setViewPager(viewPager)
-        viewPager.adapter = tabAdapter
+
 
 
     }
