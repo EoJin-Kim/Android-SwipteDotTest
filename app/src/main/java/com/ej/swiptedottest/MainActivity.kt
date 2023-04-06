@@ -2,9 +2,11 @@ package com.ej.swiptedottest
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.ej.swiptedottest.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +27,20 @@ class MainActivity : AppCompatActivity() {
         val viewPager = binding.viewPager
         viewPager.adapter = adapter
         val circleIndicator = binding.circleIndicator3
+
+        viewPager.offscreenPageLimit = 1
+        val nextItemVisiblePx = resources.getDimension(R.dimen.viewpager_next_item_visible)
+        val currentItemHorizontalMarginPx = resources.getDimension(R.dimen.viewpager_current_item_horizontal_margin)
+        val pageTranslationX = nextItemVisiblePx + currentItemHorizontalMarginPx
+        val pageTransformer = ViewPager2.PageTransformer { page: View, position: Float ->
+            page.translationX = -pageTranslationX * position
+        }
+        viewPager.setPageTransformer(pageTransformer)
+        val itemDecoration = HorizontalMarginItemDecoration(
+            baseContext,
+            R.dimen.viewpager_current_item_horizontal_margin
+        )
+        viewPager.addItemDecoration(itemDecoration)
 
         circleIndicator.setViewPager(viewPager)
 
